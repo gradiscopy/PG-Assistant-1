@@ -1,0 +1,6 @@
+{
+    "webhook_url": "",
+    "min_id": 10000000,
+    "max_id": 100000000,
+    "offline_years": 6
+}
