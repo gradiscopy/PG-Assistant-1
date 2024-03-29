@@ -41,7 +41,7 @@ webhook = config.get("webhook_url")
 min_id = config.get("min_id")
 max_id = config.get("max_id")    
 
-version = "v1.1.5"
+version = "v1.2.0"
 
 os.system('cls' if os.name == 'nt' else 'clear')
 print(Fore.YELLOW + "[CHECK] | Checking version...")
@@ -173,6 +173,8 @@ async def rap(session, user_id, cursor, rap=0):
         return await rap(session, user_id, response["nextPageCursor"], rap)
     return rap
 
+total_scraped = 0
+
 async def main(webhook_url, min_id, max_id):
     async with aiohttp.ClientSession() as session:
         user_id = random.randint(min_id, max_id)
@@ -215,9 +217,11 @@ async def main(webhook_url, min_id, max_id):
         created_year_str = str(created_year)
         last_online_date_str = last_online_date.strftime("%B %d, %Y")    
 
+        global total_scraped 
+
         embed = {
             "title": f":bell: Scraped new user for PG ({roblox_username})",
-            "description": "",
+            "description": f":gem: Total users scraped: {total_scraped}",
             "color": 5763719,
             "url": f"https://roblox.com/users/{user_id}",
             "thumbnail": {"url": await avatar_thumbnail(session, user_id)},
@@ -240,7 +244,9 @@ async def main(webhook_url, min_id, max_id):
         data = {"embeds": [embed]}
         async with session.post(webhook_url, json=data) as response:
             if response.status == 204:
-                print(Fore.GREEN + f"[INFO] | Successfully sent {roblox_username} to webhook")
+                total_scraped += 1
+
+                print(Fore.GREEN + f"[INFO] | Successfully sent {roblox_username} to webhook | Total Users Scraped: {total_scraped}")
             else:
                 print(Fore.RED + f"[ERROR] | Failed to send {roblox_username} to webhook | Status Code: {response.status}")
                 asyncio.create_task(clear_output())
