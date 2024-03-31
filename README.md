@@ -1,1 +1,1 @@
-# All guides and info about bot in [Discord Server](https://discord.gg/73y53QZfjA)
+# All guides and info about bot in https://discord.gg/73y53QZfjA
